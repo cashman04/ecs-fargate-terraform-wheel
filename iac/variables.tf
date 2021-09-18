@@ -66,3 +66,13 @@ variable "environment_variables" {
 variable "hosted_zone" {
   description = "Hosted zone to create Route53 entries"
 }
+
+variable "service_example_max_capacity" {
+  description = "Maximum Desired capacity for example service autoscaling"
+  default     = 4
+}
+
+variable "service_example_min_capacity" {
+  description = "Minimum Desired capacity for example service autoscaling"
+  default     = 1
+}
