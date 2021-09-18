@@ -61,6 +61,7 @@ variable "health_check_path" {
 
 variable "environment_variables" {
   description = "Environment Variables"
+  default     = []
 }
 
 variable "hosted_zone" {
