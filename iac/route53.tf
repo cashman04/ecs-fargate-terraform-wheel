@@ -1,6 +1,6 @@
 resource "aws_route53_record" "main" {
   zone_id = data.aws_route53_zone.main.id
-  name    = "${var.name}.dan.cash"
+  name    = "${var.name}.${var.hosted_zone}"
   type    = "CNAME"
   ttl     = "300"
   records = [aws_lb.main.dns_name]

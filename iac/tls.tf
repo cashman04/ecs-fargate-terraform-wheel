@@ -1,5 +1,5 @@
 resource "aws_acm_certificate" "main" {
-  domain_name       = "${var.name}.dan.cash"
+  domain_name       = "${var.name}.${var.hosted_zone}"
   validation_method = "DNS"
 }
 
