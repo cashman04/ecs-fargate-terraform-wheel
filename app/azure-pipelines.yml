@@ -24,13 +24,13 @@ stages:
           dockerfile: '**/Dockerfile'
           tags: |
             $(tag)
-          arguments: -t wheel-dev-ecr:$(Build.BuildId)
+          arguments: -t wheel-dev:$(Build.BuildId)
       - task: ECRPushImage@1
         inputs:
           awsCredentials: 'CashPersonalAWS'
           regionName: 'us-east-2'
           imageSource: 'imagename'
-          sourceImageName: 'rearc-quest'
+          sourceImageName: 'wheel-dev'
           sourceImageTag: '$(Build.BuildId)'
           repositoryName: 'wheel-dev-ecr'
       - task: ECRPushImage@1
@@ -38,7 +38,7 @@ stages:
           awsCredentials: 'CashPersonalAWS'
           regionName: 'us-east-2'
           imageSource: 'imagename'
-          sourceImageName: 'rearc-quest'
+          sourceImageName: 'wheel-dev'
           sourceImageTag: '$(Build.BuildId)'
           repositoryName: 'wheel-dev-ecr'
           pushTag: '$(Build.BuildId)'
