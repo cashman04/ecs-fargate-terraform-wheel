@@ -42,7 +42,6 @@ variable "availability_zones" {
 
 variable "container_port" {
   description = "Exposed Docker Port"
-  default     = 3000
 }
 
 variable "container_cpu" {
@@ -62,4 +61,8 @@ variable "health_check_path" {
 
 variable "environment_variables" {
   description = "Environment Variables"
+}
+
+variable "hosted_zone" {
+  description = "Hosted zone to create Route53 entries"
 }

@@ -1,5 +1,5 @@
 resource "aws_route53_record" "main" {
-  zone_id = data.aws_route53_zone.dancash.id
+  zone_id = data.aws_route53_zone.main.id
   name    = "${var.name}.dan.cash"
   type    = "CNAME"
   ttl     = "300"
@@ -20,5 +20,5 @@ resource "aws_route53_record" "tls" {
   records         = [each.value.record]
   ttl             = 60
   type            = each.value.type
-  zone_id         = data.aws_route53_zone.dancash.zone_id
+  zone_id         = data.aws_route53_zone.main.zone_id
 }
