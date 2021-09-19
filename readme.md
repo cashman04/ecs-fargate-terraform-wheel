@@ -6,7 +6,7 @@ This repo contains both the **IAC** (Terraform) and a sample **Dockerfile** (NGI
 * AWS Account
 	* IAM User with permissions to create resources
 	* Access and Secret keys for IAM user
-	* S3 bucket manually provisioned to hold Terraform state file. Example: `myapp-terraform-backend`
+	* S3 bucket manually provisioned to hold Terraform state file. Example: `wheel-terraform-backend`
 	* Route53 Hosted Zone used to create CNAME and TLS verification entries
 * [Terraform executable](https://www.terraform.io/downloads.html) in your Path
 * [Docker](https://www.docker.com/products/docker-desktop) installed locally, or access to a docker instance to build the container
@@ -22,14 +22,14 @@ This repo contains both the **IAC** (Terraform) and a sample **Dockerfile** (NGI
 	* `aws_secret_key = "***"` Your IAM User secret key
 	* `aws_region = "***"`  AWS Region(note, if you change this from us-east-2 you will need to also set an: `availability_zones` variable as well.  See `iac/variables.tf` for other optional configs
 	* `environment =  "dev"` Environment name
-	* `name = "myapp"` Your App Name
+	* `name = "wheel"` Your App Name
 	* `container_port =  80`  Port your docker image exposes. Example Docker image uses port 80
 	* `hosted_zone =  "acme.com"`  Name of your hosted zone.  A CNAME entry will be create with `$name.$hosted_zone` pointing the Application Load Balancer serving your ECS Service
-	* Modify `app\main.tf` and change backend `bucket` setting to your bucket name you wish to house the Terraform state file in(line 10):  `bucket =  "myapp-terraform-backend"`
+	* Modify `app\main.tf` and change backend `bucket` setting to your bucket name you wish to house the Terraform state file in(line 10):  `bucket =  "wheel-terraform-backend"`
 
 * Initialize Terraform(for Bash CLI change ticks to forward slashes): 
 	```
-	terraform init -backend-config="bucket=myapp-terraform-backend" `
+	terraform init -backend-config="bucket=wheel-terraform-backend" `
                    -backend-config="key=tf/state/terraform.tfstate" `
                    -backend-config="region=us-east-1" `
                    -backend-config="access_key=***" `
@@ -65,7 +65,7 @@ commands will detect it and remind you to do so if necessary.
 
 * Create a Terraform plan
 	```
-	terraform plan -out myapp.tfplan
+	terraform plan -out wheel.tfplan
 	```
 Truncated example output:
 ```
@@ -73,14 +73,14 @@ Plan: 40 to add, 0 to change, 0 to destroy.
 
 ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 
-Saved the plan to: myapp.tfplan
+Saved the plan to: wheel.tfplan
 
 To perform exactly these actions, run the following command to apply:
-    terraform apply "myapp.tfplan"
+    terraform apply "wheel.tfplan"
 ```
 * Apply Terraform plan
 	```
-	terraform apply "myapp.tfplan"
+	terraform apply "wheel.tfplan"
 	```
 Truncated Example output:
 ```
@@ -100,25 +100,25 @@ Next_Steps = <<EOT
 Next Steps to deploy example docker container to ECS:
 
   Docker Build(from app directory):
-      docker build . -t myapp
+      docker build . -t wheel --build-arg weatherapikey=<openweatherapikey>
 
 
   Login to ECR:
-      aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 548698725178.dkr.ecr.us-east-2.amazonaws.com/myapp-dev-ecr
+      aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 548698725178.dkr.ecr.us-east-2.amazonaws.com/wheel-dev-ecr
 
 
   Tag Docker image with ECR:
-      docker tag myapp 548698725178.dkr.ecr.us-east-2.amazonaws.com/myapp-dev-ecr
+      docker tag wheel 548698725178.dkr.ecr.us-east-2.amazonaws.com/wheel-dev-ecr
 
 
   Push Docker image to ECR:
-      docker push 548698725178.dkr.ecr.us-east-2.amazonaws.com/myapp-dev-ecr
+      docker push 548698725178.dkr.ecr.us-east-2.amazonaws.com/wheel-dev-ecr
 
 
   Force new ECS service deployment:
-      aws ecs update-service --cluster myapp-dev-ecs --service myapp-dev-service --force-new-deployment
+      aws ecs update-service --cluster wheel-dev-ecs --service wheel-dev-service --force-new-deployment
 
 
   Wait a short time and then visit your URL!
-      myapp.acme.com
+      wheel.acme.com
 ```
