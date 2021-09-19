@@ -4,7 +4,7 @@ output "Next_Steps" {
   Next Steps to deploy example docker container to ECS:
 
     Docker Build(from app directory):  
-        docker build . -t ${var.name}
+        docker build . -t ${var.name} --build-arg weatherapikey=<openweatherapikey>
         
 
     Login to ECR:  
